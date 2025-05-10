@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # choose.sh - Choose from a menu of options
 
 # @depends on:

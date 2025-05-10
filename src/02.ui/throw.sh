@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # throw.sh - Print an throw message
 
 # @depends on:
@@ -25,9 +25,7 @@ throw() {
     # If there is a spinner running, stop it and clear the line
     if spinning; then
         spop
-        up
-        bol
-        cl
+        upclear
     fi
 
     pen -n red "${_cross:-✗} "

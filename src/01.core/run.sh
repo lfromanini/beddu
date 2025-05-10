@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # run.sh - Execute commands with output/error capture
 
 # Execute a command with stdout and stderr capture capabilities

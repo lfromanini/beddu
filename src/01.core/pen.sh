@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # pen.sh - Print pretty text
 
 # @depends on:

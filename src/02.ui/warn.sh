@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # warn.sh - Print a warning message
 
 # @depends on:
@@ -25,9 +25,7 @@ warn() {
     # If there is a spinner running, stop it and clear the line
     if spinning; then
         spop
-        up
-        bol
-        cl
+        upclear
     fi
 
     pen -n yellow bold italic "${_warn:-!} "

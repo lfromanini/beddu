@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # movements.sh - Cursor helper functions
 
 # Move cursor up one line
@@ -28,9 +28,7 @@ cl() {
 
 # Clear line above
 upclear() {
-    up
-    bol
-    cl
+    up; bol; cl
 }
 
 # Print a single newline

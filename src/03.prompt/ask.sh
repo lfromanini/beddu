@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # ask.sh - Get free text input from the user
 
 # @depends on:

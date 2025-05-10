@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # repen.sh - Overwrite the previous line with new text
 
 # @depends on:

@@ -27,14 +27,15 @@ demo: build
 
 $(OUTPUT): $(ALL_SRC_FILES)
 	@mkdir -p $(OUT_DIR)
-	@echo '#! /usr/bin/env bash' > $(OUTPUT)
+	@echo '#!/usr/bin/env bash' > $(OUTPUT)
 	@echo '# shellcheck disable=all' >> $(OUTPUT)
 	@echo '#' >> $(OUTPUT)
 	@echo '# beddu.sh - A lightweight bash framework for interactive scripts and pretty output' >> $(OUTPUT)
 	@echo '# https://github.com/mjsarfatti/beddu' >> $(OUTPUT)
 	@echo '#' >> $(OUTPUT)
+	@echo '# Version: $(shell git describe --tags --dirty)' >> $(OUTPUT)
 	@echo '# Generated on: $(shell date)' >> $(OUTPUT)
-	@# Process each file, stripping (line) comments and empty lines
+	@# Process each file, stripping comments and empty lines
 	@for file in $(ALL_SRC_FILES); do \
 		echo "" >> $(OUTPUT); \
 		grep -v '^\s*#' "$$file" | sed '/^[[:space:]]*$$/d' | sed 's/#[a-zA-Z0-9 ]*$$//' >> $(OUTPUT); \

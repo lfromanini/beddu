@@ -1,19 +1,20 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # shellcheck disable=all
 #
 # beddu.sh - A lightweight bash framework for interactive scripts and pretty output
 # https://github.com/mjsarfatti/beddu
 #
-# Generated on: Fri May  9 20:00:08 CEST 2025
+# Version: v0.0.3-dirty
+# Generated on: Sun May 11 01:40:08 CEST 2025
 
-_q='?'
-_a='❯'
-_o='◌'
-_O='●'
-_mark='✓'
-_warn='!'
-_cross='✗'
-_spinner='⣷⣯⣟⡿⢿⣻⣽⣾' # See for alternatives: https://antofthy.gitlab.io/info/ascii/Spinners.txt
+readonly _q='?'
+readonly _a='❯'
+readonly _o='◌'
+readonly _O='●'
+readonly _mark='✓'
+readonly _warn='!'
+readonly _cross='✗'
+readonly _spinner='⣷⣯⣟⡿⢿⣻⣽⣾' # See for alternatives: https://antofthy.gitlab.io/info/ascii/Spinners.txt
 export _q _a _o _O _mark _warn _cross _spinner
 
 up() {
@@ -32,9 +33,7 @@ cl() {
     printf "\033[2K"
 }
 upclear() {
-    up
-    bol
-    cl
+    up; bol; cl
 }
 line() {
     printf "\n"
@@ -118,9 +117,7 @@ export -f run
 check() {
     if spinning; then
         spop
-        up
-        bol
-        cl
+        upclear
     fi
     pen -n green "${_mark:-✓} "
     pen "$@"
@@ -183,9 +180,7 @@ export -f spin spop spinning
 throw() {
     if spinning; then
         spop
-        up
-        bol
-        cl
+        upclear
     fi
     pen -n red "${_cross:-✗} "
     pen "$@"
@@ -195,9 +190,7 @@ export -f throw
 warn() {
     if spinning; then
         spop
-        up
-        bol
-        cl
+        upclear
     fi
     pen -n yellow bold italic "${_warn:-!} "
     pen italic "$@"

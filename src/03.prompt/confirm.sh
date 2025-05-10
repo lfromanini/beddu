@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # confirm.sh - Read a yes/no confirmation from the user
 
 # @depends on:
