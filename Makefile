@@ -33,7 +33,6 @@ _release:
 		echo "❗User Error: Please specify a version number (e.g. make _release v0.0.5)"; \
 		exit 1; \
 	fi
-	@echo ""
 	$(eval VERSION := $(filter-out $@,$(MAKECMDGOALS)))
 	@if [ "$$(git branch --show-current)" != "main" ]; then \
 		echo "❗User Error: Releases can only be made from the main branch"; \
@@ -45,15 +44,15 @@ _release:
 	fi; \
 	$(MAKE) build
 	@echo ""
-	sed -i '' "s/# Version: .*/# Version: $(VERSION)/" $(OUTPUT); \
-	sed -i '' -E "s/v[0-9]+\.[0-9]+\.[0-9]+/$(VERSION)/" $(README); \
-	git add $(OUTPUT) $(README); \
+	@sed -i '' "s/# Version: .*/# Version: $(VERSION)/" $(OUTPUT); \
+	sed -i '' -E "s/v[0-9]+\.[0-9]+\.[0-9]+/$(VERSION)/" $(README)
+	@git add $(OUTPUT) $(README); \
 	git commit -m "Release $(VERSION)"; \
 	git tag -a "$(VERSION)" -m "Release $(VERSION)"
 	@echo ""
-	git push --follow-tags
+	@git push --follow-tags
 	@echo ""
-	gh release create "$(VERSION)" --generate-notes --title "⚡ $(VERSION)" "$(OUTPUT)#beddu.sh"
+	@gh release create "$(VERSION)" --generate-notes --title "⚡ $(VERSION)" "$(OUTPUT)#beddu.sh"
 	@echo "\n\033[32m✔︎\033[0m Release complete: \033[32m$(VERSION)\033[0m"
 
 # Get the last version tag and increment the appropriate part
