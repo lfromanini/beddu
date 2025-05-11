@@ -4,8 +4,8 @@
 # beddu.sh - A lightweight bash framework for interactive scripts and pretty output
 # https://github.com/mjsarfatti/beddu
 #
-# Version: v0.0.5
-# Generated on: Sun May 11 13:37:32 CEST 2025
+# Version: test-rel
+# Generated on: Sun May 11 14:05:34 CEST 2025
 
 readonly _q='?'
 readonly _a='❯'
@@ -136,7 +136,7 @@ spin() {
     fi
     (
         hide_cursor
-        trap "show_cursor; exit 0" USR1
+        trap "exit 0" USR1
         pen -n cyan "${spinner:0:1} "
         pen "${message[@]}"
         while true; do
@@ -160,9 +160,9 @@ spop() {
         sleep "$_frame_duration"
         if ps -p "${_spinner_pid}" >/dev/null 2>&1; then
             kill "${_spinner_pid}" 2>/dev/null
-            if [[ "$keep_cursor_hidden" == false ]]; then
-                show_cursor
-            fi
+        fi
+        if [[ "$keep_cursor_hidden" == false ]]; then
+            show_cursor
         fi
         _spinner_pid=""
     fi
