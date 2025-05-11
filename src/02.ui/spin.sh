@@ -46,7 +46,7 @@ spin() {
         hide_cursor
 
         # Use a trap to catch USR1 signal for clean shutdown
-        trap "show_cursor; exit 0" USR1
+        trap "exit 0" USR1
 
         # Print the first frame of the spinner
         pen -n cyan "${spinner:0:1} "
@@ -82,10 +82,11 @@ spop() {
         # Ensure it's really gone
         if ps -p "${_spinner_pid}" >/dev/null 2>&1; then
             kill "${_spinner_pid}" 2>/dev/null
-            # Manually clean up display, unless asked not to do so
-            if [[ "$keep_cursor_hidden" == false ]]; then
-                show_cursor
-            fi
+        fi
+
+        # Manually clean up display, unless asked not to do so
+        if [[ "$keep_cursor_hidden" == false ]]; then
+            show_cursor
         fi
 
         _spinner_pid=""

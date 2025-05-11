@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
-# Import the beddu.sh library
 # shellcheck disable=SC1091
-source "$(dirname -- "$0")/../build/beddu.sh"
+source "$(dirname -- "$0")/../dist/beddu.sh"
 
-# Demo function to showcase the framework
 demo() {
     _violet=99
     _pink=219
 
-    pen "\n>> $_q <<\n"
+    hide_cursor
 
     line
     pen $_violet "╔═════════════════════════════════════════════╗"
@@ -27,7 +25,7 @@ demo() {
     line
     spin $_pink "Loading text formatting..."
     sleep 1
-    spop
+    spop --keep-cursor-hidden
     upclear
     pen $_pink italic "-- Text formatting --"
     line
@@ -39,7 +37,7 @@ demo() {
     line
     spin $_pink "Loading basic colors..."
     sleep 1
-    spop
+    spop --keep-cursor-hidden
     upclear
     pen $_pink italic "-- Basic colors --"
     line
@@ -51,14 +49,14 @@ demo() {
     pen cyan "Cyan text"
     pen white "White text"
     pen grey "Grey text"
-    pen -n black "Black text"
+    pen -n black "Black text "
     pen italic "[Black text - might not be visible]"
     line
 
     line
     spin $_pink "Loading ANSI 256 colors..."
     sleep 1
-    spop
+    spop --keep-cursor-hidden
     upclear
     pen $_pink italic "-- ANSI 256 colors (examples) --"
     line
@@ -70,7 +68,7 @@ demo() {
     line
     spin $_pink "Loading combined formatting..."
     sleep 1
-    spop
+    spop --keep-cursor-hidden
     upclear
     pen $_pink italic "-- Combined formatting --"
     line
@@ -88,7 +86,7 @@ demo() {
     line
     spin $_pink "Loading output utilities..."
     sleep 1
-    spop
+    spop --keep-cursor-hidden
     upclear
     pen $_pink italic "-- Output utilities --"
     line
@@ -99,7 +97,7 @@ demo() {
     line
     spin $_pink "Starting interactive experience..."
     sleep 1
-    spop
+    spop --keep-cursor-hidden
     upclear
     pen $_pink italic "-- Interactive functions --"
     line

@@ -39,7 +39,7 @@ release:
 	sed -i '' "s/# Version: .*/# Version: $$VERSION/" $(OUTPUT); \
 	git add $(OUTPUT); \
 	git commit -m "Release $$VERSION"; \
-	git tag -a "$$VERSION" -m "Release $$VERSION"
+	git tag -a "$$VERSION" -m "Release $$VERSION"; \
 	@echo "\nRelease complete: \033[32m$$VERSION\033[0m"
 
 %:
