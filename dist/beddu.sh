@@ -4,8 +4,8 @@
 # beddu.sh - A lightweight bash framework for interactive scripts and pretty output
 # https://github.com/mjsarfatti/beddu
 #
-# Version: v0.0.7
-# Generated on: Sun May 11 14:14:14 CEST 2025
+# Version: v0.0.8
+# Generated on: Sun May 11 14:19:38 CEST 2025
 
 readonly _q='?'
 readonly _a='❯'
