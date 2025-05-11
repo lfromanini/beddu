@@ -11,7 +11,7 @@ source "$SCRIPT_DIR/../00.utils/movements.sh"
 source "$SCRIPT_DIR/../01.core/pen.sh"
 
 # Make sure the cursor is shown and the spinner stopped if the script exits abnormally
-trap spop EXIT INT TERM
+trap "spop; show_cursor" EXIT INT TERM
 
 # Module state variables
 _spinner_pid=""

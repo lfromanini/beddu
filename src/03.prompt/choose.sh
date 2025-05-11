@@ -28,7 +28,7 @@ choose() {
     # Set prompt with default indicator
     prompt=$(
         pen -n blue "${_q:-?} "
-        pen -n "${2}"
+        pen -n "${2} "
         pen gray "[↑↓]"
     )
 
