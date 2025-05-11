@@ -22,21 +22,17 @@ And you will easily be able to build things like:
 - **Visual Indicators**: Spinners, checkmarks, and error symbols
 - **Line Manipulation**: Replace previous output for dynamic updates
 
-## Installation
+## Installation and Usage
 
-Clone the repository or download `beddu.sh` to your project:
+**Beddu** is meant to be sourced in your own script.
+
+1. Download `beddu.sh` to your project:
 
 ```bash
-# Clone the repository
-git clone https://github.com/mjsarfatti/beddu.git
-
-# Or just download the compiled script
-curl -O https://raw.githubusercontent.com/mjsarfatti/beddu/main/beddu.sh
+$ curl -O https://raw.githubusercontent.com/mjsarfatti/beddu/main/beddu.sh
 ```
 
-## Usage
-
-Source the `beddu.sh` file in your script:
+2. Source the `beddu.sh` file in your script:
 
 ```bash
 #!/usr/bin/env bash
@@ -46,9 +42,18 @@ source "/path/to/beddu.sh"
 pen bold blue "Hello, world!"
 ```
 
+## Demo
+
+To see it in action, clone the repository, then run `make demo`. This will run the same interactive demo that you can see in the video above (please note that a 12MB wikimedia.org random file will be downloaded during the demo to showcase the functionality - a prompt will let you delete it at the end):
+
+```bash
+$ git clone https://github.com/mjsarfatti/beddu.git
+$ make demo
+```
+
 ## Examples
 
-More can be seen by looking at the [demo](./beddu.sh) file, but here is a quick overview:
+More can be seen by looking at the [demo](./demo/demo.sh) file, but here is a quick overview:
 
 ### Text Formatting and Colors
 
@@ -112,14 +117,6 @@ sleep 1
 repen spin "Almost done..." # Let's add a spinner for good measure
 sleep 1
 check "Task completed!" # We can directly `check`, `warn`, or `throw` after a `spin` call - the message will always replace the spin line
-```
-
-## Demo
-
-To see it in action paste the following command in your terminal:
-
-```bash
-curl -s https://raw.githubusercontent.com/mjsarfatti/beddu/main/demo/demo.sh | bash
 ```
 
 ## Function Reference
