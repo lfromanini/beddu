@@ -4,6 +4,7 @@ OUT_DIR = dist
 OUTPUT = $(OUT_DIR)/beddu.sh
 SRC_DIR = src
 DEMO_DIR = demo
+README = README.md
 YEAR = $(shell date +%Y)
 IP = $(shell curl -s ipinfo.io/ip)
 
@@ -29,19 +30,26 @@ demo: build
 
 _release:
 	@if [ -z "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
-		echo "Error: Please specify a version number (e.g. make release v0.0.5)"; \
+		echo "Error: Please specify a version number (e.g. make _release v0.0.5)"; \
 		exit 1; \
 	fi
 	$(eval VERSION := $(filter-out $@,$(MAKECMDGOALS)))
+	@if [ "$$(git branch --show-current)" != "main" ]; then \
+		echo "Error: Releases can only be made from the main branch"; \
+		exit 1; \
+	fi
 	@if ! git diff-index --quiet HEAD --; then \
 		echo "Error: Git working directory is not clean. Please commit or stash your changes first."; \
 		exit 1; \
 	fi; \
 	$(MAKE) build; \
 	sed -i '' "s/# Version: .*/# Version: $(VERSION)/" $(OUTPUT); \
-	git add $(OUTPUT); \
+	sed -i '' "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/$(VERSION)/" $(README); \
+	git add $(OUTPUT) $(README); \
 	git commit -m "Release $(VERSION)"; \
-	git tag -a "$(VERSION)" -m "Release $(VERSION)"
+	git tag -a "$(VERSION)" -m "Release $(VERSION)"; \
+	git push origin --tags; \
+	gh release create "$(VERSION)" --generate-notes --title "⚡ $(VERSION)" "$(OUTPUT)#beddu.sh"; \
 	@echo "\nRelease complete: \033[32m$(VERSION)\033[0m"
 
 # Get the last version tag and increment the appropriate part
