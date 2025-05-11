@@ -30,17 +30,17 @@ release:
 		echo "Error: Please specify a version number (e.g. make release v0.0.5)"; \
 		exit 1; \
 	fi
-	@VERSION="$(filter-out $@,$(MAKECMDGOALS))"; \
-	if ! git diff-index --quiet HEAD --; then \
+	$(eval VERSION := $(filter-out $@,$(MAKECMDGOALS)))
+	@if ! git diff-index --quiet HEAD --; then \
 		echo "Error: Git working directory is not clean. Please commit or stash your changes first."; \
 		exit 1; \
 	fi; \
 	$(MAKE) build; \
-	sed -i '' "s/# Version: .*/# Version: $$VERSION/" $(OUTPUT); \
+	sed -i '' "s/# Version: .*/# Version: $(VERSION)/" $(OUTPUT); \
 	git add $(OUTPUT); \
-	git commit -m "Release $$VERSION"; \
-	git tag -a "$$VERSION" -m "Release $$VERSION"; \
-	@echo "\nRelease complete: \033[32m$$VERSION\033[0m"
+	git commit -m "Release $(VERSION)"; \
+	git tag -a "$(VERSION)" -m "Release $(VERSION)"
+	@echo "\nRelease complete: \033[32m$(VERSION)\033[0m"
 
 %:
 	@:
