@@ -30,42 +30,49 @@ demo: build
 
 _release:
 	@if [ -z "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
-		echo "Error: Please specify a version number (e.g. make _release v0.0.5)"; \
+		echo "❗User Error: Please specify a version number (e.g. make _release v0.0.5)"; \
 		exit 1; \
 	fi
+	@echo ""
 	$(eval VERSION := $(filter-out $@,$(MAKECMDGOALS)))
 	@if [ "$$(git branch --show-current)" != "main" ]; then \
-		echo "Error: Releases can only be made from the main branch"; \
+		echo "❗User Error: Releases can only be made from the main branch"; \
 		exit 1; \
 	fi
 	@if ! git diff-index --quiet HEAD --; then \
-		echo "Error: Git working directory is not clean. Please commit or stash your changes first."; \
+		echo "❗User Error: Git working directory is not clean. Please commit or stash your changes first."; \
 		exit 1; \
 	fi; \
-	$(MAKE) build; \
+	$(MAKE) build
+	@echo ""
 	sed -i '' "s/# Version: .*/# Version: $(VERSION)/" $(OUTPUT); \
-	sed -i '' "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/$(VERSION)/" $(README); \
+	sed -i '' -E "s/v[0-9]+\.[0-9]+\.[0-9]+/$(VERSION)/" $(README); \
 	git add $(OUTPUT) $(README); \
 	git commit -m "Release $(VERSION)"; \
-	git tag -a "$(VERSION)" -m "Release $(VERSION)"; \
-	git push origin --tags; \
-	gh release create "$(VERSION)" --generate-notes --title "⚡ $(VERSION)" "$(OUTPUT)#beddu.sh"; \
-	@echo "\nRelease complete: \033[32m$(VERSION)\033[0m"
+	git tag -a "$(VERSION)" -m "Release $(VERSION)"
+	@echo ""
+	git push --follow-tags
+	@echo ""
+	gh release create "$(VERSION)" --generate-notes --title "⚡ $(VERSION)" "$(OUTPUT)#beddu.sh"
+	@echo "\n\033[32m✔︎\033[0m Release complete: \033[32m$(VERSION)\033[0m"
 
 # Get the last version tag and increment the appropriate part
 release-patch:
+	@echo ""
 	@LAST_VERSION=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
 	NEW_VERSION=$$(echo $$LAST_VERSION | awk -F. '{print $$1"."$$2"."$$3+1}'); \
 	echo "Bumping patch version from $$LAST_VERSION to $$NEW_VERSION"; \
 	$(MAKE) _release $$NEW_VERSION
 
 release-minor:
+	@echo ""
 	@LAST_VERSION=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
 	NEW_VERSION=$$(echo $$LAST_VERSION | awk -F. '{print $$1"."$$2+1".0"}'); \
 	echo "Bumping minor version from $$LAST_VERSION to $$NEW_VERSION"; \
 	$(MAKE) _release $$NEW_VERSION
 
 release-major:
+	@echo ""
 	@LAST_VERSION=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
 	NEW_VERSION=$$(echo $$LAST_VERSION | awk -F. '{print "v"$$2+1".0.0"}'); \
 	echo "Bumping major version from $$LAST_VERSION to $$NEW_VERSION"; \
@@ -75,6 +82,7 @@ release-major:
 	@:
 
 $(OUTPUT): $(ALL_SRC_FILES)
+	@echo ""
 	@mkdir -p $(OUT_DIR)
 	@echo '#!/usr/bin/env bash' > $(OUTPUT)
 	@echo '# shellcheck disable=all' >> $(OUTPUT)
@@ -91,8 +99,9 @@ $(OUTPUT): $(ALL_SRC_FILES)
 		grep -v '^\s*#\|^source \|^SCRIPT_DIR=\|^readonly BEDDU_.*_LOADED\|^\[\[ \$$BEDDU_.*_LOADED \]\]' "$$file" | sed '/^[[:space:]]*$$/d' | sed 's/#[a-zA-Z0-9 ]*$$//' >> $(OUTPUT); \
 	done
 	@chmod +x $(OUTPUT)
-	@echo "\nBuild complete: \033[32m$(OUTPUT)\033[0m"
+	@echo "\033[32m✔︎\033[0m Build complete: \033[32m$(OUTPUT)\033[0m"
 
 clean:
+	@echo ""
 	@rm -rf $(OUT_DIR)
-	@echo "\nClean up completed."
+	@echo "\033[32m✔︎\033[0m Clean up completed."
