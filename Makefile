@@ -14,7 +14,7 @@ get_dir_files = $(wildcard $(1)*.sh)
 # Build ALL_SRC_FILES by including files from each subdirectory in order
 ALL_SRC_FILES = $(foreach dir,$(SUBDIRS),$(call get_dir_files,$(dir)))
 
-.PHONY: all clean demo build release
+.PHONY: all clean demo build _release bump-patch bump-minor bump-major
 
 all: $(OUTPUT)
 
@@ -25,7 +25,7 @@ build:
 demo: build
 	@./$(DEMO_DIR)/demo.sh
 
-release:
+_release:
 	@if [ -z "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
 		echo "Error: Please specify a version number (e.g. make release v0.0.5)"; \
 		exit 1; \
@@ -41,6 +41,25 @@ release:
 	git commit -m "Release $(VERSION)"; \
 	git tag -a "$(VERSION)" -m "Release $(VERSION)"
 	@echo "\nRelease complete: \033[32m$(VERSION)\033[0m"
+
+# Get the last version tag and increment the appropriate part
+release-patch:
+	@LAST_VERSION=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
+	NEW_VERSION=$$(echo $$LAST_VERSION | awk -F. '{print $$1"."$$2"."$$3+1}'); \
+	echo "Bumping patch version from $$LAST_VERSION to $$NEW_VERSION"; \
+	$(MAKE) _release $$NEW_VERSION
+
+release-minor:
+	@LAST_VERSION=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
+	NEW_VERSION=$$(echo $$LAST_VERSION | awk -F. '{print $$1"."$$2+1".0"}'); \
+	echo "Bumping minor version from $$LAST_VERSION to $$NEW_VERSION"; \
+	$(MAKE) _release $$NEW_VERSION
+
+release-major:
+	@LAST_VERSION=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
+	NEW_VERSION=$$(echo $$LAST_VERSION | awk -F. '{print "v"$$2+1".0.0"}'); \
+	echo "Bumping major version from $$LAST_VERSION to $$NEW_VERSION"; \
+	$(MAKE) _release $$NEW_VERSION
 
 %:
 	@:
