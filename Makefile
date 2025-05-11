@@ -4,6 +4,8 @@ OUT_DIR = dist
 OUTPUT = $(OUT_DIR)/beddu.sh
 SRC_DIR = src
 DEMO_DIR = demo
+YEAR = $(shell date +%Y)
+IP = $(shell curl -s ipinfo.io/ip)
 
 # Find all direct subdirectories of src and sort them alphabetically
 SUBDIRS = $(sort $(dir $(wildcard $(SRC_DIR)/*/)))
@@ -70,10 +72,11 @@ $(OUTPUT): $(ALL_SRC_FILES)
 	@echo '# shellcheck disable=all' >> $(OUTPUT)
 	@echo '#' >> $(OUTPUT)
 	@echo '# beddu.sh - A lightweight bash framework for interactive scripts and pretty output' >> $(OUTPUT)
-	@echo '# https://github.com/mjsarfatti/beddu' >> $(OUTPUT)
-	@echo '#' >> $(OUTPUT)
 	@echo '# Version: $(shell git describe --tags --dirty)' >> $(OUTPUT)
-	@echo '# Generated on: $(shell date)' >> $(OUTPUT)
+	@echo '#' >> $(OUTPUT)
+	@echo '# Copyright © $(YEAR) Manuele Sarfatti' >> $(OUTPUT)
+	@echo '# Licensed under the MIT license' >> $(OUTPUT)
+	@echo '# See https://github.com/mjsarfatti/beddu' >> $(OUTPUT)
 	@# Process each file, stripping comments, empty lines, and source lines
 	@for file in $(ALL_SRC_FILES); do \
 		echo "" >> $(OUTPUT); \

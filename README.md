@@ -4,7 +4,15 @@ A lightweight bash framework for interactive scripts with pretty output.
 
 ## Overview
 
-**Beddu** is a minimalist bash library that makes your terminal scripts more interactive and visually appealing. It provides easy-to-use functions for colorful text, spinners, progress indicators, and user interaction.
+**Beddu** is a minimalist bash library that makes your terminal scripts more interactive and visually appealing. It provides easy-to-use and intuitive functions for colorful text, spinners, progress indicators, and user interaction.
+
+Your scripts will look something like this:
+
+![Example](./demo/carbon.png)
+
+And you will easily be able to build things like:
+
+[![asciicast](https://asciinema.org/a/E4frqYZFk3XR38UkGYs5ASnKC.svg)](https://asciinema.org/a/E4frqYZFk3XR38UkGYs5ASnKC)
 
 ## Features
 
@@ -22,7 +30,7 @@ Clone the repository or download `beddu.sh` to your project:
 # Clone the repository
 git clone https://github.com/mjsarfatti/beddu.git
 
-# Or download just the script
+# Or just download the compiled script
 curl -O https://raw.githubusercontent.com/mjsarfatti/beddu/main/beddu.sh
 ```
 
@@ -59,7 +67,7 @@ pen 39 "ANSI color code 39 (light blue)"
 pen bold red "Bold red text"
 
 # Inline
-echo "This is $(pen yellow "yellow"), and this is $(pen bold "bold")"
+pen "This is $(pen yellow "yellow"), and this is $(pen bold "bold")"
 ```
 
 ### Interactive Functions
@@ -94,7 +102,7 @@ pen "You selected: $color"
 # Show a progress spinner
 spin "Working on it..."
 sleep 2
-check "Done!"
+check "Done!" # Automatically stops and replaces the spinner
 
 # Replace lines dynamically
 pen "This will be replaced..."
@@ -103,7 +111,7 @@ repen "Processing started..."
 sleep 1
 repen spin "Almost done..." # Let's add a spinner for good measure
 sleep 1
-check "Task completed!" # We can directly `check` or `error` after a `spin` call - the message will always replace the spin line
+check "Task completed!" # We can directly `check`, `warn`, or `throw` after a `spin` call - the message will always replace the spin line
 ```
 
 ## Demo
@@ -111,7 +119,7 @@ check "Task completed!" # We can directly `check` or `error` after a `spin` call
 To see it in action paste the following command in your terminal:
 
 ```bash
-curl -s https://raw.githubusercontent.com/mjsarfatti/beddu/main/demo.sh | bash
+curl -s https://raw.githubusercontent.com/mjsarfatti/beddu/main/demo/demo.sh | bash
 ```
 
 ## Function Reference
@@ -119,9 +127,9 @@ curl -s https://raw.githubusercontent.com/mjsarfatti/beddu/main/demo.sh | bash
 ### Text Formatting
 
 - `pen [OPTIONS] TEXT` - Output formatted text
-  - `-n` - No newline after output (must be the first option if used)
+  - `-n` - No newline after output
   - `bold`, `italic`, `underline` - Text styles
-  - `red`, `green`, `blue`, etc. - Color names
+  - `black`, `red`, `green`, `yellow`, `blue`, `purple`, `cyan`, `white`, `grey`, `gray` - Color names
   - `0-255` - ANSI color codes
 
 ### User Interaction
@@ -134,25 +142,21 @@ curl -s https://raw.githubusercontent.com/mjsarfatti/beddu/main/demo.sh | bash
 
 ### Progress Indicators
 
-- `spin MESSAGE` - Show animated spinner
-- `check MESSAGE` - Show success indicator (if called right after a spinner, replaces that line)
-- `error MESSAGE` - Show error indicator (if called right after a spinner, replaces that line)
-- `repen [OPTIONS] MESSAGE` - Like `pen`, but replace the previous line
-  - `-n` - No newline after output (must be the first option if used)
-  - `spin`, `check`, `error` - If passed, use this function to print the message
-  - `bold`, `italic`, `underline` - Text styles
-  - `red`, `green`, `blue`, etc. - Color names
-  - `0-255` - ANSI color codes
+- `spin MESSAGE` - Show an animated spinner
+- `check MESSAGE` - Show a success message (if called right after a spinner, it stops and replaces it)
+- `warn MESSAGE` - Show a warning message (if called right after a spinner, it stops and replaces it)
+- `throw MESSAGE` - Show an error message (if called right after a spinner, it stops and replaces it)
+- `repen [OPTIONS] MESSAGE` - Like `pen`, but replace the previous line (it accepts all the same options)
 
 ## FAQ
 
 ### Q: It doesn't work on my computer?
 
-A: **Beddu** requires bash v4+. If your bash version checks out, please file an issue!
+A: **Beddu** requires bash v4+. If you are on a mac, you probably want to `brew install bash`. If your bash version checks out, please file an issue!
 
 ### Q: Can you add feature X?
 
-A: Most likely, not. This is meant to be a _minimal_ toolkit to quickly jot down simple interactive scripts, nothing more. If you are looking for something more complete check out [Gum](https://github.com/charmbracelet/gum) (bash), [Inquire](https://github.com/mikaelmello/inquire) (Rust) or [Enquirer](https://github.com/enquirer/enquirer) (Node).
+A: Most likely, not (but never say never). This is meant to be a _minimal_ toolkit to quickly jot down simple interactive scripts, nothing more. If you are looking for something more complete check out [Gum](https://github.com/charmbracelet/gum) (bash), [Inquire](https://github.com/mikaelmello/inquire) (Rust), [Enquirer](https://github.com/enquirer/enquirer) (Node) or [Awesome Bash](https://github.com/awesome-lists/awesome-bash).
 
 ## License
 

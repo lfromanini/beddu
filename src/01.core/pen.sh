@@ -14,8 +14,7 @@ readonly BEDDU_PEN_LOADED=true
 #   italic: Italic text
 #   underline: Underline text
 #   black|red|green|yellow|blue|purple|cyan|white|grey|gray: Color text
-#   [0-9]: ANSI 256 color number
-#   *: Any other text is printed as is
+#   [0-255]: ANSI 256 color number
 # Examples:
 #   pen "Hello, world!"
 #   pen -n "Hello, world!"

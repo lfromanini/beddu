@@ -2,10 +2,11 @@
 # shellcheck disable=all
 #
 # beddu.sh - A lightweight bash framework for interactive scripts and pretty output
-# https://github.com/mjsarfatti/beddu
+# Version: v0.0.8-dirty
 #
-# Version: v0.0.8
-# Generated on: Sun May 11 14:19:38 CEST 2025
+# Copyright © 2025 Manuele Sarfatti
+# Licensed under the MIT license
+# See https://github.com/mjsarfatti/beddu
 
 readonly _q='?'
 readonly _a='❯'
@@ -125,7 +126,7 @@ repen() {
     pen "$@"
 }
 
-trap spop EXIT INT TERM
+trap "spop; show_cursor" EXIT INT TERM
 _spinner_pid=""
 _frame_duration="${_spinner_frame_duration:-0.1}"
 spin() {
@@ -220,7 +221,7 @@ choose() {
     local count=${#options[@]}
     prompt=$(
         pen -n blue "${_q:-?} "
-        pen -n "${2}"
+        pen -n "${2} "
         pen gray "[↑↓]"
     )
     hide_cursor
