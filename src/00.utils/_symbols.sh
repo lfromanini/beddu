@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # @private
 
+[[ $BEDDU_SYMBOLS_LOADED ]] && return
+readonly BEDDU_SYMBOLS_LOADED=true
+
 readonly _q='?'
 readonly _a='❯'
 readonly _o='◌'
@@ -9,5 +12,4 @@ readonly _mark='✓'
 readonly _warn='!'
 readonly _cross='✗'
 readonly _spinner='⣷⣯⣟⡿⢿⣻⣽⣾' # See for alternatives: https://antofthy.gitlab.io/info/ascii/Spinners.txt
-
-export _q _a _o _O _mark _warn _cross _spinner
+readonly _spinner_frame_duration=0.1

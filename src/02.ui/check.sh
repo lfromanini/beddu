@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 # check.sh - Print a success message
 
-# @depends on:
-# - pen.sh
-# - movements.sh
-# - _symbols.sh
+[[ $BEDDU_CHECK_LOADED ]] && return
+readonly BEDDU_CHECK_LOADED=true
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+source "$SCRIPT_DIR/../00.utils/_symbols.sh"
+source "$SCRIPT_DIR/../00.utils/movements.sh"
+source "$SCRIPT_DIR/../01.core/pen.sh"
+source "$SCRIPT_DIR/spin.sh"
 
 # Print a checkmark with a message, and stop and replace the
 # spinner if it's running (relies on the spinner being the last
@@ -31,6 +36,3 @@ check() {
     pen -n green "${_mark:-✓} "
     pen "$@"
 }
-
-# Export the check function so it can be used in other scripts
-export -f check

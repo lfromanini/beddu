@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 # ask.sh - Get free text input from the user
 
-# @depends on:
-# - pen.sh
-# - _symbols.sh
-# - cursor.sh
+[[ $BEDDU_ASK_LOADED ]] && return
+readonly BEDDU_ASK_LOADED=true
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+source "$SCRIPT_DIR/../00.utils/_symbols.sh"
+source "$SCRIPT_DIR/../00.utils/movements.sh"
+source "$SCRIPT_DIR/../01.core/pen.sh"
+source "$SCRIPT_DIR/../02.ui/warn.sh"
 
 # Ask a question and get a free text answer from the user
 #
@@ -42,6 +47,3 @@ ask() {
     # shellcheck disable=SC2034
     outvar="$answer"
 }
-
-# Export the ask function so it's available to subshells
-export -f ask

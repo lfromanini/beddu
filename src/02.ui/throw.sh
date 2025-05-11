@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 # throw.sh - Print an throw message
 
-# @depends on:
-# - pen.sh
-# - movements.sh
-# - _symbols.sh
+[[ $BEDDU_THROW_LOADED ]] && return
+readonly BEDDU_THROW_LOADED=true
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+source "$SCRIPT_DIR/../00.utils/_symbols.sh"
+source "$SCRIPT_DIR/../00.utils/movements.sh"
+source "$SCRIPT_DIR/../01.core/pen.sh"
+source "$SCRIPT_DIR/spin.sh"
 
 # Print an throwmark with a message, and stop and replace the
 # spinner if it's running (relies on the spinner being the last
@@ -31,6 +36,3 @@ throw() {
     pen -n red "${_cross:-✗} "
     pen "$@"
 }
-
-# Export the throw function so it can be used in other scripts
-export -f throw

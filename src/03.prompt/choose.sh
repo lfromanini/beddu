@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 # choose.sh - Choose from a menu of options
 
-# @depends on:
-# - pen.sh
-# - _symbols.sh
-# - cursor.sh
+[[ $BEDDU_CHOOSE_LOADED ]] && return
+readonly BEDDU_CHOOSE_LOADED=true
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+source "$SCRIPT_DIR/../00.utils/_symbols.sh"
+source "$SCRIPT_DIR/../00.utils/movements.sh"
+source "$SCRIPT_DIR/../01.core/pen.sh"
 
 # Print an interactive menu of options and return the selected option
 #

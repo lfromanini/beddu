@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # pen.sh - Print pretty text
 
-# @depends on:
-# - _symbols.sh
+[[ $BEDDU_PEN_LOADED ]] && return
+readonly BEDDU_PEN_LOADED=true
 
 # Print text with ANSI color codes and text formatting
 #
@@ -57,6 +57,3 @@ pen() {
 
     printf "%b%s%b%b" "${format_code}" "${text}" "${reset_code}" "${new_line}"
 }
-
-# Export the pen function so it's available to subshells
-export -f pen

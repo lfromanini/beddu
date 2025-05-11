@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 # spin.sh - Print a spinner with a message
 
-# @depends on:
-# - pen.sh
-# - movements.sh
-# - _symbols.sh
+[[ $BEDDU_SPIN_LOADED ]] && return
+readonly BEDDU_SPIN_LOADED=true
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+source "$SCRIPT_DIR/../00.utils/_symbols.sh"
+source "$SCRIPT_DIR/../00.utils/movements.sh"
+source "$SCRIPT_DIR/../01.core/pen.sh"
 
 # Make sure the cursor is shown and the spinner stopped if the script exits abnormally
 trap spop EXIT INT TERM
 
 # Module state variables
-_spinner_frame_duration=0.1
 _spinner_pid=""
+_frame_duration="${_spinner_frame_duration:-0.1}"
 
 # Print a message with a spinner at the beginning
 #
@@ -30,7 +34,7 @@ _spinner_pid=""
 #   check "Dependancies installed."
 spin() {
     local message=("$@")
-    _spinner="${_spinner:-⣷⣯⣟⡿⢿⣻⣽⣾}"
+    local spinner="${_spinner:-⣷⣯⣟⡿⢿⣻⣽⣾}"
 
     # If there is already a spinner running, stop it
     if spinning; then
@@ -45,17 +49,17 @@ spin() {
         trap "show_cursor; exit 0" USR1
 
         # Print the first frame of the spinner
-        pen -n cyan "${_spinner:0:1} "
+        pen -n cyan "${spinner:0:1} "
         pen "${message[@]}"
 
         while true; do
-            for ((i = 0; i < ${#_spinner}; i++)); do
-                frame="${_spinner:$i:1}"
+            for ((i = 0; i < ${#spinner}; i++)); do
+                frame="${spinner:$i:1}"
                 up
                 bol
                 pen -n cyan "${frame} "
                 pen "${message[@]}"
-                sleep $_spinner_frame_duration
+                sleep "$_frame_duration"
             done
         done
     ) &
@@ -73,7 +77,7 @@ spop() {
         kill -USR1 "${_spinner_pid}" 2>/dev/null
 
         # Wait briefly for cleanup
-        sleep $_spinner_frame_duration
+        sleep "$_frame_duration"
 
         # Ensure it's really gone
         if ps -p "${_spinner_pid}" >/dev/null 2>&1; then
@@ -92,6 +96,3 @@ spop() {
 spinning() {
     [[ -n "${_spinner_pid}" ]]
 }
-
-# Export the functions so they are available to subshells
-export -f spin spop spinning

@@ -9,6 +9,8 @@ demo() {
     _violet=99
     _pink=219
 
+    pen "\n>> $_q <<\n"
+
     line
     pen $_violet "╔═════════════════════════════════════════════╗"
     pen $_violet "║                                             ║"

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # movements.sh - Cursor helper functions
 
+[[ $BEDDU_MOVEMENTS_LOADED ]] && return
+readonly BEDDU_MOVEMENTS_LOADED=true
+
 # Move cursor up one line
 up() {
     printf "\033[A"
@@ -45,6 +48,3 @@ show_cursor() {
 hide_cursor() {
     printf "\033[?25l"
 }
-
-# Export the functions so they are available to subshells
-export -f up down bol eol cl line show_cursor hide_cursor

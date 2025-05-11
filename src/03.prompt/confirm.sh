@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 # confirm.sh - Read a yes/no confirmation from the user
 
-# @depends on:
-# - pen.sh
-# - _symbols.sh
-# - movements.sh
+[[ $BEDDU_CONFIRM_LOADED ]] && return
+readonly BEDDU_CONFIRM_LOADED=true
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+source "$SCRIPT_DIR/../00.utils/_symbols.sh"
+source "$SCRIPT_DIR/../00.utils/movements.sh"
+source "$SCRIPT_DIR/../01.core/pen.sh"
+source "$SCRIPT_DIR/../02.ui/warn.sh"
 
 # Ask a question and get a yes/no answer from the user
 #
@@ -74,6 +79,3 @@ confirm() {
         esac
     done
 }
-
-# Export the confirm function so it's available to subshells
-export -f confirm

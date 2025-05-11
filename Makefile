@@ -1,6 +1,6 @@
 # Beddu build Makefile
 
-OUT_DIR = build
+OUT_DIR = dist
 OUTPUT = $(OUT_DIR)/beddu.sh
 SRC_DIR = src
 DEMO_DIR = demo
@@ -14,7 +14,7 @@ get_dir_files = $(wildcard $(1)*.sh)
 # Build ALL_SRC_FILES by including files from each subdirectory in order
 ALL_SRC_FILES = $(foreach dir,$(SUBDIRS),$(call get_dir_files,$(dir)))
 
-.PHONY: all clean demo build
+.PHONY: all clean demo build release
 
 all: $(OUTPUT)
 
@@ -25,6 +25,26 @@ build:
 demo: build
 	@./$(DEMO_DIR)/demo.sh
 
+release:
+	@if [ -z "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
+		echo "Error: Please specify a version number (e.g. make release v0.0.5)"; \
+		exit 1; \
+	fi
+	@VERSION="$(filter-out $@,$(MAKECMDGOALS))"; \
+	if ! git diff-index --quiet HEAD --; then \
+		echo "Error: Git working directory is not clean. Please commit or stash your changes first."; \
+		exit 1; \
+	fi; \
+	$(MAKE) build; \
+	sed -i '' "s/# Version: .*/# Version: $$VERSION/" $(OUTPUT); \
+	git add $(OUTPUT); \
+	git commit -m "Release $$VERSION"; \
+	git tag -a "$$VERSION" -m "Release $$VERSION"
+	@echo "\nRelease complete: \033[32m$$VERSION\033[0m"
+
+%:
+	@:
+
 $(OUTPUT): $(ALL_SRC_FILES)
 	@mkdir -p $(OUT_DIR)
 	@echo '#!/usr/bin/env bash' > $(OUTPUT)
@@ -33,12 +53,12 @@ $(OUTPUT): $(ALL_SRC_FILES)
 	@echo '# beddu.sh - A lightweight bash framework for interactive scripts and pretty output' >> $(OUTPUT)
 	@echo '# https://github.com/mjsarfatti/beddu' >> $(OUTPUT)
 	@echo '#' >> $(OUTPUT)
-	@echo '# Version: $(shell git describe --tags)' >> $(OUTPUT)
+	@echo '# Version: $(shell git describe --tags --dirty)' >> $(OUTPUT)
 	@echo '# Generated on: $(shell date)' >> $(OUTPUT)
-	@# Process each file, stripping comments and empty lines
+	@# Process each file, stripping comments, empty lines, and source lines
 	@for file in $(ALL_SRC_FILES); do \
 		echo "" >> $(OUTPUT); \
-		grep -v '^\s*#' "$$file" | sed '/^[[:space:]]*$$/d' | sed 's/#[a-zA-Z0-9 ]*$$//' >> $(OUTPUT); \
+		grep -v '^\s*#\|^source \|^SCRIPT_DIR=\|^readonly BEDDU_.*_LOADED\|^\[\[ \$$BEDDU_.*_LOADED \]\]' "$$file" | sed '/^[[:space:]]*$$/d' | sed 's/#[a-zA-Z0-9 ]*$$//' >> $(OUTPUT); \
 	done
 	@chmod +x $(OUTPUT)
 	@echo "\nBuild complete: \033[32m$(OUTPUT)\033[0m"

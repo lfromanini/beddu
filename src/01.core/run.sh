@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # run.sh - Execute commands with output/error capture
 
+[[ $BEDDU_RUN_LOADED ]] && return
+readonly BEDDU_RUN_LOADED=true
+
 # Execute a command with stdout and stderr capture capabilities
 #
 # Usage:
@@ -54,6 +57,3 @@ run() {
     rm -f "${stdout_file}" "${stderr_file}"
     return $exit_code
 }
-
-# Export the run function so it's available to subshells
-export -f run
