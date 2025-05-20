@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1091
-# ask.sh - Get free text input from the user
+# request.sh - Get required text input from the user
 
 [[ $BEDDU_ASK_LOADED ]] && return
 readonly BEDDU_ASK_LOADED=true
@@ -11,14 +11,14 @@ source "$SCRIPT_DIR/../00.utils/movements.sh"
 source "$SCRIPT_DIR/../01.core/pen.sh"
 source "$SCRIPT_DIR/../02.ui/warn.sh"
 
-# Ask a question and get a free text answer from the user
+# Ask a question and require a free text answer from the user
 #
 # Usage:
-#   ask outvar text
+#   request outvar text
 # Example:
-#   ask name "What is your name?"
+#   request name "What is your name?"
 #   echo "Hello, $name!"
-ask() {
+request() {
     local -n outvar="$1" # Declare nameref
     local prompt
     local answer

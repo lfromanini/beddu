@@ -2,7 +2,7 @@
 # shellcheck disable=all
 #
 # beddu.sh - A lightweight bash framework for interactive scripts and pretty output
-# Version: v1.0.0
+# Version: v1.0.0-1-g5ff6a50-dirty
 #
 # Copyright © 2025 Manuele Sarfatti
 # Licensed under the MIT license
@@ -190,29 +190,6 @@ warn() {
     pen italic "$@"
 }
 
-ask() {
-    local -n outvar="$1" 
-    local prompt
-    local answer
-    prompt=$(
-        pen -n blue "${_q:-?} "
-        pen "${2}"
-        pen -n blue "${_a:-❯} "
-    )
-    show_cursor
-    while true; do
-        read -r -p "$prompt" answer
-        case "$answer" in
-        "")
-            echo
-            warn "Please type your answer."
-            ;;
-        *) break ;;
-        esac
-    done
-    outvar="$answer"
-}
-
 choose() {
     local -n outvar="$1"
     local prompt
@@ -308,4 +285,41 @@ confirm() {
             ;;
         esac
     done
+}
+
+request() {
+    local -n outvar="$1" 
+    local prompt
+    local answer
+    prompt=$(
+        pen -n blue "${_q:-?} "
+        pen "${2}"
+        pen -n blue "${_a:-❯} "
+    )
+    show_cursor
+    while true; do
+        read -r -p "$prompt" answer
+        case "$answer" in
+        "")
+            echo
+            warn "Please type your answer."
+            ;;
+        *) break ;;
+        esac
+    done
+    outvar="$answer"
+}
+
+seek() {
+    local -n outvar="$1" 
+    local prompt
+    local answer
+    prompt=$(
+        pen -n blue "${_q:-?} "
+        pen "${2}"
+        pen -n blue "${_a:-❯} "
+    )
+    show_cursor
+    read -r -p "$prompt" answer
+    outvar="$answer"
 }

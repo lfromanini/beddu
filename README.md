@@ -78,9 +78,14 @@ pen "This is $(pen yellow "yellow"), and this is $(pen bold "bold")"
 ### Interactive Functions
 
 ```bash
-# Ask for input
-ask name "What's your name?"
+# Kindly ask for input (empty answer is accepted)
+seek name "What's your name?"
 pen "Hello, $name!"
+
+# Firmly ask for input (empty answer NOT accepted)
+request name "No really, what's your name?"
+pen "There you go, $name!"
+
 
 # Yes/no confirmation (defaults to "yes")
 if confirm "Continue?"; then
@@ -131,7 +136,8 @@ check "Task completed!" # We can directly `check`, `warn`, or `throw` after a `s
 
 ### User Interaction
 
-- `ask [retval] PROMPT` - Get text input from user, saves the answer in `$retval`
+- `seek [retval] PROMPT` - Get (optional) text input from user, saves the answer in `$retval`
+- `request [retval] PROMPT` - Like above, but doesn't accept an empty response, saves the answer in `$retval`
 - `confirm [OPTIONS] PROMPT` - Get yes/no input
   - `--default-yes` - Set default answer to "yes" (default behavior)
   - `--default-no` - Set default answer to "no"

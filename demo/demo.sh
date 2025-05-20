@@ -102,7 +102,7 @@ demo() {
     pen $_pink italic "-- Interactive functions --"
     line
 
-    ask name "How can I call you?"
+    request name "How can I call you?"
     pen "Hello, $(pen bold cyan "${name:?}")"
     line
 
