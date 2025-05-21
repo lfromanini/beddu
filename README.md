@@ -1,4 +1,4 @@
-# Beddu
+# Beddu 💅🏻
 
 A lightweight bash framework for interactive scripts with pretty output.
 

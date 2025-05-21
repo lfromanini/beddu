@@ -2,20 +2,17 @@
 
 . beddu.sh
 
-line
-pen purple "Hello, I'm your IP helper, here to help you will all your IP needs."
-line
+pen purple "Hello, I'm your IP helper, here for all your IP needs!"
 
-choose action "What would you like to do?" "Get my IP" "Get my location"
+choose ACTION "What would you like to do?" "Get my IP" "Get my location"
 
-case "$action" in
+case "$ACTION" in
     "Get my IP")
-        run --out ip curl ipinfo.io/ip
-        line; pen "Your IP is $ip"
+        run --out IP curl ipinfo.io/ip
+        pen "Your IP is $IP"
         ;;
-    "Get my location")
-        run --out location curl -s ipinfo.io/loc
-        line; pen "Your coordinates are $location"
+    "Get my LOCATION")
+        run --out LOCATION curl -s ipinfo.io/loc
+        pen "Your coordinates are $LOCATION"
         ;;
 esac
-
